@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /*员工基本信息*/
 @Mapper
@@ -51,4 +53,16 @@ public interface EmpMapper {
      * 修改员工基本信息
      */
     void updateById(Emp emp);
+
+
+    /**
+     * 员工职位人数统计
+     */
+    List<Map<String, Object>> getEmpJobData();
+
+
+    /**
+     * 员工性别人数统计
+     */
+    List<Map<String, Object>> getEmpGenderData();
 }

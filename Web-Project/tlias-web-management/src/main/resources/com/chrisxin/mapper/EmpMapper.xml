@@ -55,4 +55,21 @@
     <select id="searchById" resultType="com.chrisxin.entity.Emp">
         select * from emp where id=#{id}
     </select>
+
+    <!--员工职位数量统计-->
+    <select id="getEmpJobData" resultType="java.util.Map">
+        select (case job when 1 then '班主任'
+            when 2 then '讲师'
+            when 3 then '学工主管'
+            when 4 then '教研主管'
+            when 5 then '咨询师'
+            else '其他' end) pos
+            ,count(*) num from emp
+            group by job order by num
+    </select>
+
+    <!--员工性别人数统计-->
+    <select id="getEmpGenderData" resultType="java.util.Map">
+        select (if(gender=1,'男性','女性')) name,count(*) value from emp group by gender
+    </select>
 </mapper>
