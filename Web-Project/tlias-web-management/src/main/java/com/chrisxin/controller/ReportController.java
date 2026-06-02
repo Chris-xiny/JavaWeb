@@ -2,6 +2,7 @@ package com.chrisxin.controller;
 
 import com.chrisxin.entity.JobOption;
 import com.chrisxin.entity.Result;
+import com.chrisxin.entity.StudentOption;
 import com.chrisxin.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,26 @@ public class ReportController {
     public Result getEmpGenderData(){
         log.info("开始统计员工性别人数");
         List<Map<String,Object>> list= reportService.getEmpGenderData();
+        return Result.success(list);
+    }
+
+    /**
+     * 班级人数统计
+     */
+    @GetMapping("/studentCountData")
+    public Result getStudentCountData(){
+        log.info("开始统计学生数量");
+        StudentOption studentOption = reportService.getStudentCountData();
+        return Result.success(studentOption);
+    }
+
+    /**
+     * 学生学历统计
+     */
+    @GetMapping("/studentDegreeData")
+    public Result getStudentDegreeData(){
+        log.info("开始统计学生学历数量");
+        List<Map<String,Object>> list= reportService.getStudentDegreeData();
         return Result.success(list);
     }
 }

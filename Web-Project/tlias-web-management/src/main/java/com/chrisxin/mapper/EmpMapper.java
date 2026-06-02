@@ -33,6 +33,10 @@ public interface EmpMapper {
     //@Select("select e.*,d.name deptName from emp e left join dept d on e.dept_id = d.id order by update_time desc")
     public List<Emp> list(EmpQueryParam empQueryParam);
 
+
+    /**
+     * 添加员工信息
+     */
     @Options(useGeneratedKeys = true,keyProperty = "id")//开启功能:获取该sql在数据库生成的主键，并返回给emp的id属性
     @Insert("insert into emp(username, name, gender, phone, job, salary, image, entry_date, dept_id, create_time, update_time) "+
     "values(#{username},#{name},#{gender},#{phone},#{job},#{salary},#{image},#{entryDate},#{deptId},#{createTime},#{updateTime})")
@@ -65,4 +69,10 @@ public interface EmpMapper {
      * 员工性别人数统计
      */
     List<Map<String, Object>> getEmpGenderData();
+
+    /**
+     * 查询所有员工信息
+     */
+    @Select("select * from emp")
+    List<Emp> findAll();
 }

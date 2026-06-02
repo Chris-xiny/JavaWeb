@@ -1,6 +1,7 @@
 package com.chrisxin.service.impl;
 
 import com.chrisxin.entity.Dept;
+import com.chrisxin.exception.IsEmptyException;
 import com.chrisxin.mapper.DeptMapper;
 import com.chrisxin.service.DeptService;
 import org.apache.catalina.User;
@@ -17,7 +18,11 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public void deleteById(Integer id) {
-        deptMapper.deleteById(id);
+        if(deptMapper.isEmpty(id)!=0){
+            throw new IsEmptyException("该部门下有员工，不能删除");
+        }else{
+            deptMapper.deleteById(id);
+        }
     }
 
     @Override

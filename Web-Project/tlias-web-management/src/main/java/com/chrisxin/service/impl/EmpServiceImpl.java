@@ -120,4 +120,9 @@ public class EmpServiceImpl implements EmpService {
         }
         empExprMapper.addBatch(exprList);
     }
+
+    @Override
+    public List<Emp> list() {
+        return empMapper.findAll();
+    }
 }
