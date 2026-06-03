@@ -75,4 +75,10 @@ public interface EmpMapper {
      */
     @Select("select * from emp")
     List<Emp> findAll();
+
+    /**
+     * 员工登录
+     */
+    @Select("select * from emp where username=#{username} and password=#{password}")
+    Emp loginByUsernameAndPassword(Emp emp);
 }

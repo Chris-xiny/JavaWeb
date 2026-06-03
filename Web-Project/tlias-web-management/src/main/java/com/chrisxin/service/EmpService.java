@@ -2,6 +2,7 @@ package com.chrisxin.service;
 
 import com.chrisxin.entity.Emp;
 import com.chrisxin.entity.EmpQueryParam;
+import com.chrisxin.entity.LoginInfo;
 import com.chrisxin.entity.PageResult;
 
 import java.util.List;
@@ -30,5 +31,13 @@ public interface EmpService {
      */
     void update(Emp emp);
 
+    /**
+     * 查询所有员工信息
+     */
     List<Emp> list();
+
+    /**
+     * 员工登录
+     */
+    LoginInfo login(Emp emp);
 }

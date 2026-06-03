@@ -1,25 +1,25 @@
 package com.chrisxin.service.impl;
 
-import com.chrisxin.entity.Emp;
-import com.chrisxin.entity.EmpExpr;
-import com.chrisxin.entity.EmpQueryParam;
-import com.chrisxin.entity.PageResult;
+import com.chrisxin.entity.*;
 import com.chrisxin.mapper.EmpExprMapper;
 import com.chrisxin.mapper.EmpMapper;
 import com.chrisxin.service.EmpService;
+import com.chrisxin.utils.JwtUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 public class EmpServiceImpl implements EmpService {
 
@@ -93,7 +93,7 @@ public class EmpServiceImpl implements EmpService {
         //查询员工基本信息
         Emp emp = empMapper.searchById(id);
         //查询员工工作经历
-        List<EmpExpr> exprList=empExprMapper.searchByEmpId(id);
+        List<EmpExpr> exprList = empExprMapper.searchByEmpId(id);
         emp.setExprList(exprList);
         return emp;
     }
@@ -111,9 +111,9 @@ public class EmpServiceImpl implements EmpService {
         //先删除经历
         empExprMapper.deleteByEmpId(Arrays.asList(emp.getId()));
         //再添加经历
-        List<EmpExpr> exprList=emp.getExprList();
+        List<EmpExpr> exprList = emp.getExprList();
         //为工作经历绑定员工id:empId
-        if(!CollectionUtils.isEmpty(exprList)){
+        if (!CollectionUtils.isEmpty(exprList)) {
             for (EmpExpr empExpr : exprList) {
                 empExpr.setEmpId(emp.getId());
             }
@@ -121,8 +121,30 @@ public class EmpServiceImpl implements EmpService {
         empExprMapper.addBatch(exprList);
     }
 
+    /**
+     * 查询所有员工信息
+     */
     @Override
     public List<Emp> list() {
         return empMapper.findAll();
+    }
+
+    /**
+     * 员工登录
+     */
+    @Override
+    public LoginInfo login(Emp emp) {
+        Emp e = empMapper.loginByUsernameAndPassword(emp);
+        if (e != null) {
+            log.info("员工登录成功:{}", e);
+            //生成Jwt令牌
+            Map<String, Object> claims=new HashMap<>();
+            claims.put("id",e.getId());
+            claims.put("username",e.getUsername());
+            String token = JwtUtils.generateToken(claims);
+            return new LoginInfo(e.getId(), e.getUsername(), e.getName(), token);
+        }
+
+        return null;
     }
 }
