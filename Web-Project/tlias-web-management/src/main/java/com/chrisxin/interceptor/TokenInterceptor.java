@@ -1,6 +1,8 @@
 package com.chrisxin.interceptor;
 
+import com.chrisxin.utils.CurrentHolder;
 import com.chrisxin.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 @Slf4j
 public class TokenInterceptor implements HandlerInterceptor {
+    // 拦截器处理逻辑
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //获取请求头的token
@@ -24,7 +27,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
         //解析token，校验失败->响应401
         try {
-            JwtUtils.parseToken(token);
+            Claims claims =JwtUtils.parseToken(token);
+            CurrentHolder.setCurrentId(Integer.valueOf(claims.get("id").toString()));
         } catch (Exception e) {
             log.info("令牌非法");
             response.setStatus(401);
@@ -35,13 +39,16 @@ public class TokenInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    // 处理业务逻辑后
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
+    // 响应返回给前端后，清理当前线程的变量
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+        CurrentHolder.remove();
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }

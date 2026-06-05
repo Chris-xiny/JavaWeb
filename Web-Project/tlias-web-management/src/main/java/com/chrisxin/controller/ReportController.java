@@ -15,7 +15,6 @@ import java.util.Map;
 
 
 @Slf4j
-@RequestMapping("/report")
 @RestController
 public class ReportController {
 
@@ -25,7 +24,7 @@ public class ReportController {
     /**
      * 员工职位数量人数
      */
-    @GetMapping("/empJobData")
+    @GetMapping("/report/empJobData")
     public Result getEmpJobData(){
         log.info("开始统计员工职位人数");
         JobOption jobOption= reportService.getEmpJobData();
@@ -35,7 +34,7 @@ public class ReportController {
     /**
      * 员工性别人数统计
      */
-    @GetMapping("/empGenderData")
+    @GetMapping("/report/empGenderData")
     public Result getEmpGenderData(){
         log.info("开始统计员工性别人数");
         List<Map<String,Object>> list= reportService.getEmpGenderData();
@@ -45,7 +44,7 @@ public class ReportController {
     /**
      * 班级人数统计
      */
-    @GetMapping("/studentCountData")
+    @GetMapping("/report/studentCountData")
     public Result getStudentCountData(){
         log.info("开始统计学生数量");
         StudentOption studentOption = reportService.getStudentCountData();
@@ -55,10 +54,20 @@ public class ReportController {
     /**
      * 学生学历统计
      */
-    @GetMapping("/studentDegreeData")
+    @GetMapping("/report/studentDegreeData")
     public Result getStudentDegreeData(){
         log.info("开始统计学生学历数量");
         List<Map<String,Object>> list= reportService.getStudentDegreeData();
         return Result.success(list);
     }
+
+    /**
+     * 日志分页查询
+     */
+    @GetMapping("/log/page")
+    public Result page(Integer page, Integer pageSize){
+        return Result.success(reportService.page(page,pageSize));
+    }
+
+
 }

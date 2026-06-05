@@ -1,6 +1,8 @@
 package com.chrisxin.service;
 
 import com.chrisxin.entity.JobOption;
+import com.chrisxin.entity.OperateLog;
+import com.chrisxin.entity.PageResult;
 import com.chrisxin.entity.StudentOption;
 
 import java.util.List;
@@ -27,4 +29,9 @@ public interface ReportService {
      * 学生学历人数统计
      */
     List<Map<String, Object>> getStudentDegreeData();
+
+    /**
+     * 分页查询
+     */
+    PageResult<OperateLog> page(Integer page, Integer pageSize);
 }

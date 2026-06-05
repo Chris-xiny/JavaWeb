@@ -1,10 +1,15 @@
 package com.chrisxin.service.impl;
 
 import com.chrisxin.entity.JobOption;
+import com.chrisxin.entity.OperateLog;
+import com.chrisxin.entity.PageResult;
 import com.chrisxin.entity.StudentOption;
 import com.chrisxin.mapper.EmpMapper;
+import com.chrisxin.mapper.OperateLogMapper;
 import com.chrisxin.mapper.StudentMapper;
 import com.chrisxin.service.ReportService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,17 +25,21 @@ public class ReportServiceImpl implements ReportService {
     private EmpMapper empMapper;
 
     @Autowired
-    private StudentMapper StudentMapper;
+    private StudentMapper studentMapper;
+
+    @Autowired
+    private OperateLogMapper operateLogMapper;
 
     /**
      * 员工职位数量统计
      */
     @Override
+
     public JobOption getEmpJobData() {
         List<Map<String, Object>> empJobData = empMapper.getEmpJobData();
         List<Object> posList = empJobData.stream().map(mapData -> mapData.get("pos")).toList();
         List<Object> numList = empJobData.stream().map(mapData -> mapData.get("num")).toList();
-        return new JobOption(posList,numList);
+        return new JobOption(posList, numList);
     }
 
     /**
@@ -46,10 +55,10 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public StudentOption getStudentCountData() {
-        List<Map<String,Object>> list= StudentMapper.getStudentCountData();
+        List<Map<String, Object>> list = studentMapper.getStudentCountData();
         List<Object> className = list.stream().map(mapData -> mapData.get("clazzName")).toList();
         List<Object> num = list.stream().map(mapData -> mapData.get("num")).toList();
-        return new StudentOption(className,num);
+        return new StudentOption(className, num);
     }
 
     /**
@@ -57,7 +66,18 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public List<Map<String, Object>> getStudentDegreeData() {
-        return StudentMapper.getStudentDegreeData();
+        return studentMapper.getStudentDegreeData();
+    }
+
+    /**
+     * 日志分页查询
+     */
+    @Override
+    public PageResult<OperateLog> page(Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<OperateLog> rows = operateLogMapper.list();
+        Page<OperateLog> p = (Page<OperateLog>) rows;
+        return new PageResult<>(p.getTotal(), p.getResult());
     }
 
 

@@ -23,7 +23,7 @@ public class StudentController {
      * 分页查询
      */
     @GetMapping
-    public Result list(StudentQueryParam studentQueryParam){
+    public Result page(StudentQueryParam studentQueryParam){
         log.info("查询学生信息:{}",studentQueryParam);
         PageResult<Student> list = studentService.page(studentQueryParam);
         return Result.success(list);

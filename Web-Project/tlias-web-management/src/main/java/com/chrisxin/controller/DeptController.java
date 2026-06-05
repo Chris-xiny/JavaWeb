@@ -1,5 +1,6 @@
 package com.chrisxin.controller;
 
+import com.chrisxin.anno.Log;
 import com.chrisxin.entity.Dept;
 import com.chrisxin.entity.Result;
 import com.chrisxin.service.DeptService;
@@ -37,6 +38,7 @@ public class DeptController {
     //方法一:形参定义HttpServletRequest对象接收，然后用getParameter()方法获得请求参数(最原始最繁杂)
     //方式二:形参名前加@RequestParam("id")进行参数绑定,values为前端请求参数名;一旦加了该注解，前端必须携带参数传递，因为required默认为true
     //方式三当前端请求参数名与形参名一致，形参不用加@RequestParam也可以直接接收到对应的参数(最推荐的方式)
+    @Log
     @DeleteMapping
     public Result delete(Integer id){
         log.info("删除部门:{}",id);//"{}"为占位符,后面顺序接上参数
@@ -50,6 +52,7 @@ public class DeptController {
     POST请求参数携带在body里，为json格式，用@RequestBody注解可以让json数据封装在形参的对象里，
     赋值给对象中对应的属性（需保证json格式的键值与对象属性名保持一致）
     */
+    @Log
     @PostMapping
     public Result insert(@RequestBody Dept dept){
         log.info("新增部门:{}",dept);
@@ -67,6 +70,7 @@ public class DeptController {
     }
 
     /*修改部门*/
+    @Log
     @PutMapping
     public Result update(@RequestBody Dept dept){
         log.info("修改部门:{}",dept);
