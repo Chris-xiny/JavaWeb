@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--继承:父工程统一管理子工程的依赖及其版本
+        用于简化依赖-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.14</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <!--聚合:用于快速构建项目,而不用考虑各模块依赖的先后顺序-->
+    <modules>
+        <module>../tlias-web-management</module>
+        <module>../tlias-entity</module>
+        <module>../tlias-utils</module>
+    </modules>
+
+    <groupId>com.ChrisXin</groupId>
+    <artifactId>tlias-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>3.5.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--自定义属性-->
+        <aliyun-sdk-oss.version>3.18.4</aliyun-sdk-oss.version>
+        <javax.xml.bind.version>2.3.1</javax.xml.bind.version>
+        <javax.activation.version>1.1.1</javax.activation.version>
+        <org.glassfish.jaxb.version>2.3.3</org.glassfish.jaxb.version>
+        <io.jsonwebtoken.version>0.12.6</io.jsonwebtoken.version>
+    </properties>
+
+    <!--父工程统一管理子工程的依赖版本（还是需要子工程引入对应依赖，但不用指定版本号）-->
+    <dependencyManagement>
+        <dependencies>
+            <!--阿里云依赖-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${javax.xml.bind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${javax.activation.version}</version>
+            </dependency>
+            <!-- no more than 2.3.3-->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${org.glassfish.jaxb.version}</version>
+            </dependency>
+
+            <!--JWT-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${io.jsonwebtoken.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
