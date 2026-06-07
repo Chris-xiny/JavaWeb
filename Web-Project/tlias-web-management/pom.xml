@@ -10,9 +10,9 @@
         <relativePath>../tlias-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>com.ChrisXin</groupId>
+
     <artifactId>tlias-web-management</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+
     <name>tlias-web-management</name>
     <description>tlias-web-management</description>
     <url/>
